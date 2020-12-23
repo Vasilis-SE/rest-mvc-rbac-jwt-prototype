@@ -1,6 +1,5 @@
 class ControllerBase {
-    constructor({ params, query, body, send, uriGenerator }) {
-        this.uriGenerator = uriGenerator;
+    constructor({ params, query, body, send }) {
         this.params = params;
         this.query = query;
         this.body = body;

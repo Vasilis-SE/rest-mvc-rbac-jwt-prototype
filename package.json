@@ -1,0 +1,19 @@
+{
+  "name": "rest-mvc-rbac-jwt-prototype",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vasilis-SE/rest-mvc-rbac-jwt-prototype.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vasilis-SE/rest-mvc-rbac-jwt-prototype/issues"
+  },
+  "homepage": "https://github.com/Vasilis-SE/rest-mvc-rbac-jwt-prototype#readme"
+}

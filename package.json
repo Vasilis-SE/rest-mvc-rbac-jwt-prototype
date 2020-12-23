@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Vasilis-SE/rest-mvc-rbac-jwt-prototype/issues"
   },
-  "homepage": "https://github.com/Vasilis-SE/rest-mvc-rbac-jwt-prototype#readme"
+  "homepage": "https://github.com/Vasilis-SE/rest-mvc-rbac-jwt-prototype#readme",
+  "dependencies": {
+    "config": "^3.3.3"
+  }
 }

@@ -1,14 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const config = require('config');
 const App = require('./app');
 
 class ExpressApp extends App {
     constructor(router) {
         super(router);
-
-        this.port = config.get('api.port');
-        this.host = config.get('api.host');
 
         this.express = express();
         this.express.use(bodyParser.urlencoded({ extended: true }));
@@ -27,8 +23,8 @@ class ExpressApp extends App {
             res.status(404).send({ url: `${req.originalUrl} not found` });
         });
         
-        this.express.listen(this.port, this.host);
-        console.log(`RESTful API server started on ${this.host}:${this.port}`);
+        this.express.listen(process.env.PORT, process.env.HOST);
+        console.log(`RESTful API server started on ${process.env.HOST}:${process.env.PORT}`);
     }
 }
 

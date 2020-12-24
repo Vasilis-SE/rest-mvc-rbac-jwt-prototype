@@ -1,15 +1,21 @@
 const ControllerBase = require('./controllerBase');
+const CountriesModel = require('../models/countryModel');
 
 class CountriesController extends ControllerBase {
     async getCountries() {
         try {
-            const countries = [{ _id: 0 }, { _id: 1 }, { _id: 2 }];
+            const countries = [
+                { _id: 0, name: "Great Britain", language: "en-UK" }, 
+                { _id: 1, name: "Greece", language: "el-GR" }, 
+                { _id: 2, name: "USA", language: "en-US" }
+            ];
+
             const resources = await Promise.all(countries.map(async (country) =>   {
                 const model = new CountriesModel(country);
-                const resource = await model.getResource(this.uriGenerator);
+                const resource = await model.getResource( country );
                 return resource;
             }));
-
+            
             this.success(resources);
         } catch (err) {
             this.error(err);

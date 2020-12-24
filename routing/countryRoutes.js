@@ -1,4 +1,4 @@
-const CountryController = require('../../controllers/countryController');
+const CountryController = require('../controllers/countryController');
 const RoutesBase = require('./routesBase');
 
 class ContryRoutes extends RoutesBase {

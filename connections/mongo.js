@@ -1,36 +1,38 @@
+const chalk = require('chalk');
 const {MongoClient} = require('mongodb');
-class MongoDB {
-    #client = null;
 
-    constructor() {
-        this.init();
-    }
+class MongoDB {
+
+    // constructor() {
+    //     MongoDB.init();
+    // }
 
     static async init() {
         try {
-            const url = `mongodb+srv://${process.env.MONGODB_IP}:${process.env.MONGODB_PORT}/?poolSize=20&w=majority`;
-            this.#client = new MongoClient(url);
-            await this.#client.connect();
+            const url = `mongodb://${process.env.MONGODB_IP}:${process.env.MONGODB_PORT}`;
+            MongoDB.client = new MongoClient(url);
+            await MongoDB.client.connect();
 
             // Check if connection is established
-            await this.#client.db("admin").command({ ping: 1 });
+            await MongoDB.client.db("admin").command({ ping: 1 });
+            console.log(chalk.rgb(255, 255, 255).bold( chalk.bgGreen('  Connected with mongodb...  ')));
         } catch (e) {
-            await this.close();
+            await MongoDB.close();
             console.log( e );
         }
     }
 
     static async close() {
-        await this.#client.close();
+        await MongoDB.client.close();
     }
 
     static async countriesCollection() {
         try {
-            const database = await this.#client.db("general");
+            const database = await MongoDB.client.db("general");
             const collection = database.collection("countries");
             return collection;
         } catch (e) {
-            await this.close();
+            await MongoDB.close();
             console.log( e );
         }
     }

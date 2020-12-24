@@ -18,6 +18,7 @@
     },
     "homepage": "https://github.com/Vasilis-SE/rest-mvc-rbac-jwt-prototype#readme",
     "dependencies": {
+        "chalk": "^3.0.0",
         "config": "^3.3.3",
         "env-cmd": "^10.1.0",
         "express": "^4.17.1",

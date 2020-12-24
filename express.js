@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const App = require('./app');
 
+// Connections
+const MongoDB = require('./connections/mongo');
+
 class ExpressApp extends App {
     constructor(router) {
         super(router);
@@ -19,6 +22,9 @@ class ExpressApp extends App {
     run() {
         super.run();
         this.express.use('/api/v1', this.expressRouter);
+
+        MongoDB.init();
+
         this.express.use((req, res) => {
             res.status(404).send({ url: `${req.originalUrl} not found` });
         });

@@ -16,7 +16,6 @@ class App {
                 this._buildControllerInstance(controllerClass, req, res)[method]();
             }
         ];
-
         return result;
     }
 

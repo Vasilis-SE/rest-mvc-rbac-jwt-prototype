@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const App = require('./app');
 
+// Connections
+const MongoDB = require('./connections/mongo');
+MongoDB.init();
+
 class Express extends App {
     constructor(router) {
         super(router);
@@ -18,6 +22,7 @@ class Express extends App {
 
     run() {
         super.run();
+
         this.express.use('/api/v1', this.expressRouter);
         
         this.express.use((req, res) => {

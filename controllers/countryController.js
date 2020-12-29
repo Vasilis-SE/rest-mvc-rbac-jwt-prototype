@@ -1,5 +1,7 @@
+// Custom modules
 const ControllerBase = require('./controllerBase');
 const CountriesModel = require('../models/countryModel');
+const MongoDB = require('../connections/mongo');
 
 class CountriesController extends ControllerBase {
     
@@ -7,6 +9,7 @@ class CountriesController extends ControllerBase {
         try {
             
             console.log(MongoDB);
+
             const collection = MongoDB.countriesCollection();
             console.log(collection);
 

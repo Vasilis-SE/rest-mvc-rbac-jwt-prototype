@@ -2,7 +2,7 @@
     "name": "rest-mvc-rbac-jwt-prototype",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
         "start": "env-cmd -f ./config/prod.env node server.js 2> ./logs/application_errors.log",
         "dev": "env-cmd -f ./config/dev.env nodemon server.js 2> ./logs/application_errors.log"

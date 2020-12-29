@@ -2,22 +2,13 @@
 const ControllerBase = require('./controllerBase');
 const CountriesModel = require('../models/countryModel');
 const MongoDB = require('../connections/mongo');
-
+const { ObjectID } = require('mongodb');
 class CountriesController extends ControllerBase {
     
     async getCountries() {
         try {
-            
-            console.log(MongoDB);
-
-            const collection = MongoDB.countriesCollection();
-            console.log(collection);
-
-            const countries = [
-                { _id: 0, name: "Great Britain", language: "en-UK" }, 
-                { _id: 1, name: "Greece", language: "el-GR" }, 
-                { _id: 2, name: "USA", language: "en-US" }
-            ];
+            const collection = await MongoDB.countriesCollection();
+            const countries = await collection.find({}).toArray();
 
             const resources = await Promise.all(countries.map(async (country) =>   {
                 const model = new CountriesModel(country);
@@ -31,21 +22,33 @@ class CountriesController extends ControllerBase {
         }
     }
 
-    async getContry() {
-        const { id } = this.params;
-
+    async getCountryByID() {
         try {
+            const { id } = this.params;
+
+            const collection = await MongoDB.countriesCollection();
+            const country = await collection.find({ _id: ObjectID(id) }).toArray();
+
             const countryModel = new CountriesModel({ _id: id });
-            const resource = await countryModel.getResource(this.uriGenerator);
+            const resource = await countryModel.getResource( country );
             this.success(resource);
         } catch (err) {
             this.error(err);
         }
     }
 
-    async removeCountry() {
+    async removeCountryByID() {
         try {
-            this.nocontent();
+            const { id } = this.params;
+
+            const collection = await MongoDB.countriesCollection();
+            const result = await collection.deleteOne({ _id: ObjectID(id) });
+            
+            if(result.deletedCount !== 1) {
+                this.error();
+            }
+
+            this.success({'status': true, 'message': 'Successfull deletion!'});
         } catch (err) {
             this.error(err);
         }

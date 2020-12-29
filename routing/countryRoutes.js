@@ -8,6 +8,8 @@ class ContryRoutes extends RoutesBase {
 
     getRoutes() {
         this.addRoute('/countries', 'get', 'getCountries');
+        this.addRoute('/countries/:id', 'get', 'getCountryByID');
+        this.addRoute('/countries/:id', 'delete', 'removeCountryByID');
         return this.routes;
     }
     

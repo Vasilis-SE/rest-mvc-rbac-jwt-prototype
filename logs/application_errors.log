@@ -114,3 +114,63 @@ Require stack:
     'D:\\Repositories\\rest-mvc-rbac-jwt-prototype\\server.js'
   ]
 }
+D:\Repositories\rest-mvc-rbac-jwt-prototype\controllers\countryController.js:14
+            const countries = [
+                  ^
+
+SyntaxError: Identifier 'countries' has already been declared
+    at wrapSafe (node:internal/modules/cjs/loader:1024:16)
+    at Module._compile (node:internal/modules/cjs/loader:1072:27)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Module.require (node:internal/modules/cjs/loader:997:19)
+    at require (node:internal/modules/cjs/helpers:92:18)
+    at Object.<anonymous> (D:\Repositories\rest-mvc-rbac-jwt-prototype\routing\countryRoutes.js:1:27)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+D:\Repositories\rest-mvc-rbac-jwt-prototype\controllers\countryController.js:14
+            const countries = [
+                  ^
+
+SyntaxError: Identifier 'countries' has already been declared
+    at wrapSafe (node:internal/modules/cjs/loader:1024:16)
+    at Module._compile (node:internal/modules/cjs/loader:1072:27)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Module.require (node:internal/modules/cjs/loader:997:19)
+    at require (node:internal/modules/cjs/helpers:92:18)
+    at Object.<anonymous> (D:\Repositories\rest-mvc-rbac-jwt-prototype\routing\countryRoutes.js:1:27)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+D:\Repositories\rest-mvc-rbac-jwt-prototype\controllers\countryController.js:14
+            const countries = [
+                  ^
+
+SyntaxError: Identifier 'countries' has already been declared
+    at wrapSafe (node:internal/modules/cjs/loader:1024:16)
+    at Module._compile (node:internal/modules/cjs/loader:1072:27)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Module.require (node:internal/modules/cjs/loader:997:19)
+    at require (node:internal/modules/cjs/helpers:92:18)
+    at Object.<anonymous> (D:\Repositories\rest-mvc-rbac-jwt-prototype\routing\countryRoutes.js:1:27)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+D:\Repositories\rest-mvc-rbac-jwt-prototype\controllers\countryController.js:14
+            const countries = [
+                  ^
+
+SyntaxError: Identifier 'countries' has already been declared
+    at wrapSafe (node:internal/modules/cjs/loader:1024:16)
+    at Module._compile (node:internal/modules/cjs/loader:1072:27)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)
+    at Module.load (node:internal/modules/cjs/loader:973:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:813:14)
+    at Module.require (node:internal/modules/cjs/loader:997:19)
+    at require (node:internal/modules/cjs/helpers:92:18)
+    at Object.<anonymous> (D:\Repositories\rest-mvc-rbac-jwt-prototype\routing\countryRoutes.js:1:27)
+    at Module._compile (node:internal/modules/cjs/loader:1108:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1137:10)

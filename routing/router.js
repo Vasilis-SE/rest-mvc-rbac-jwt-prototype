@@ -8,6 +8,7 @@ class Router {
     registerRoutes(registerRouteCallback, createRouteBoundActionCallback) {
         this.routes.forEach((builder) => {
             const routes = builder.getRoutes();
+            
             routes.forEach((routeData) => {
                 RoutesCollection.addRouteData(
                     routeData.controllerClass, 

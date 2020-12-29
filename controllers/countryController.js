@@ -2,8 +2,14 @@ const ControllerBase = require('./controllerBase');
 const CountriesModel = require('../models/countryModel');
 
 class CountriesController extends ControllerBase {
+    
     async getCountries() {
         try {
+            
+            console.log(MongoDB);
+            const collection = MongoDB.countriesCollection();
+            console.log(collection);
+
             const countries = [
                 { _id: 0, name: "Great Britain", language: "en-UK" }, 
                 { _id: 1, name: "Greece", language: "el-GR" }, 

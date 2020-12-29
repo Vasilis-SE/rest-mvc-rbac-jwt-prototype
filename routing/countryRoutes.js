@@ -10,6 +10,7 @@ class ContryRoutes extends RoutesBase {
         this.addRoute('/countries', 'get', 'getCountries');
         return this.routes;
     }
+    
 }
 
 module.exports = ContryRoutes;

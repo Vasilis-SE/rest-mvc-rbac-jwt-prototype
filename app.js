@@ -21,7 +21,7 @@ class App {
     }
 
     _buildControllerInstance(ControllerClass, req, res) {
-        return new ControllerClass({
+        const inst = new ControllerClass({
             params: req.params,
             query: req.query,
             body: req.body,
@@ -33,6 +33,8 @@ class App {
                 res.status(statusCode).send(resource);
             },
         });
+
+        return inst;
     }
 
     run() {

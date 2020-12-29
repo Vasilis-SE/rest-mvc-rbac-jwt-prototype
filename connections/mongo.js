@@ -3,14 +3,10 @@ const {MongoClient} = require('mongodb');
 
 class MongoDB {
 
-    // constructor() {
-    //     MongoDB.init();
-    // }
-
     static async init() {
         try {
             const url = `mongodb://${process.env.MONGODB_IP}:${process.env.MONGODB_PORT}`;
-            MongoDB.client = new MongoClient(url);
+            MongoDB.client = new MongoClient(url, { useUnifiedTopology: true });
             await MongoDB.client.connect();
 
             // Check if connection is established

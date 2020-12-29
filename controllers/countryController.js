@@ -16,9 +16,9 @@ class CountriesController extends ControllerBase {
                 return resource;
             }));
             
-            this.success(resources);
+            this.success({'status': true, 'data': resource});
         } catch (err) {
-            this.error(err);
+            this.error({'status': false, 'message': err});
         }
     }
 
@@ -31,9 +31,9 @@ class CountriesController extends ControllerBase {
 
             const countryModel = new CountriesModel({ _id: id });
             const resource = await countryModel.getResource( country );
-            this.success(resource);
+            this.success({'status': true, 'data': resource});
         } catch (err) {
-            this.error(err);
+            this.error({'status': false, 'message': err});
         }
     }
 
@@ -50,7 +50,7 @@ class CountriesController extends ControllerBase {
 
             this.success({'status': true, 'message': 'Successfull deletion!'});
         } catch (err) {
-            this.error(err);
+            this.error({'status': false, 'message': err});
         }
     }
 }

@@ -1,5 +1,5 @@
 class ModelBase {
-    getResource(data) {
+    getResource() {
         return data;
     }
 }

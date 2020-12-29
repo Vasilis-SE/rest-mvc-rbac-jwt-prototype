@@ -1,52 +1,50 @@
 // Custom modules
 const ControllerBase = require('./controllerBase');
 const CountriesModel = require('../models/countryModel');
-const MongoDB = require('../connections/mongo');
-const { ObjectID } = require('mongodb');
+
 class CountriesController extends ControllerBase {
     
     async getCountries() {
         try {
-            const collection = await MongoDB.countriesCollection();
-            const countries = await collection.find({}).toArray();
+            const model = new CountriesModel();
+            const result = await model.getCountries();
+            if(!result) throw new Error('Could not fetch country list...');
 
-            const resources = await Promise.all(countries.map(async (country) =>   {
-                const model = new CountriesModel(country);
-                const resource = await model.getResource( country );
+            const resources = await Promise.all(result.map(async (countryInst) =>   {
+                const resource = await countryInst.getResource();
                 return resource;
             }));
             
-            this.success({'status': true, 'data': resource});
+            this.success({'status': true, 'data': resources});
         } catch (err) {
-            this.error({'status': false, 'message': err});
+            this.error({'status': false, 'message': err.message});
         }
     }
 
     async getCountryByID() {
         try {
             const { id } = this.params;
+            const countryModel = new CountriesModel();
+            countryModel.setID( id );
 
-            const collection = await MongoDB.countriesCollection();
-            const country = await collection.find({ _id: ObjectID(id) }).toArray();
+            const result = await countryModel.getCountry();
+            if(!result) throw new Error('Could not fetch country...');
 
-            const countryModel = new CountriesModel({ _id: id });
-            const resource = await countryModel.getResource( country );
+            const resource = await countryModel.getResource( countryModel );
             this.success({'status': true, 'data': resource});
         } catch (err) {
-            this.error({'status': false, 'message': err});
+            this.error({'status': false, 'message': err.message});
         }
     }
 
     async removeCountryByID() {
         try {
             const { id } = this.params;
+            const countryModel = new CountriesModel();
+            countryModel.setID( id );
 
-            const collection = await MongoDB.countriesCollection();
-            const result = await collection.deleteOne({ _id: ObjectID(id) });
-            
-            if(result.deletedCount !== 1) {
-                this.error();
-            }
+            const result = await countryModel.removeCountry();
+            if(!result) throw new Error('Could not delete country...');
 
             this.success({'status': true, 'message': 'Successfull deletion!'});
         } catch (err) {

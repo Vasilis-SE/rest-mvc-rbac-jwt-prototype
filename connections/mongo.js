@@ -22,6 +22,17 @@ class MongoDB {
         await MongoDB.client.close();
     }
 
+    static async usersCollection() {
+        try {
+            const database = await MongoDB.client.db("users");
+            const collection = database.collection("users");
+            return collection;
+        } catch (e) {
+            await MongoDB.close();
+            console.log( e );
+        }
+    }
+
     static async countriesCollection() {
         try {
             const database = await MongoDB.client.db("general");

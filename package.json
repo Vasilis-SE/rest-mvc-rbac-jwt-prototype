@@ -4,8 +4,8 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "start": "env-cmd -f ./config/prod.env node server.js 2> ./logs/application_errors.log",
-        "dev": "env-cmd -f ./config/dev.env nodemon server.js 2> ./logs/application_errors.log"
+        "start": "env-cmd -f ./config/prod.env node server.js",
+        "dev": "env-cmd -f ./config/dev.env nodemon server.js"
     },
     "repository": {
         "type": "git",

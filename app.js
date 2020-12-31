@@ -1,6 +1,7 @@
 class App {
-    constructor(router) {
+    constructor(router, security) {
         this.router = router;
+        this.security = security;
 
         this._registerRoute = this._registerRoute.bind(this);
         this._createRouteBoundAction = this._createRouteBoundAction.bind(this);
@@ -10,12 +11,22 @@ class App {
         throw new Error('Not Implemented Exception');
     }
 
+    _registerAuthRoute() {
+        throw new Error('Not Implemented Exception');
+    }
+
     _createRouteBoundAction(controllerClass, method) {
         const result = [
             (req, res) => {
                 this._buildControllerInstance(controllerClass, req, res)[method]();
             }
         ];
+
+        result.unshift( 
+            this.security.authenticate(),
+            this.security.authorise(controllerClass.name, method),
+        );
+    
         return result;
     }
 
@@ -38,6 +49,7 @@ class App {
 
     run() {
         this.router.registerRoutes(this._registerRoute, this._createRouteBoundAction);
+        this._registerAuthRoute(this.security.issueToken());
     }
 }
 

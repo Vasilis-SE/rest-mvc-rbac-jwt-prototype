@@ -12,5 +12,4 @@ const routersList = new Router([
 
 const security = new Security( process.env.JWT_SECRET ); // Create security instance
 const express = new Express(routersList, security);
-
 express.run();

@@ -20,6 +20,10 @@ class Express extends App {
         this.expressRouter.route(uri)[httpMethod](boundAction);
     }
 
+    _registerAuthRoute(boundAction) {
+        this.expressRouter.route('/auth/token').post(boundAction);
+    }
+
     run() {
         super.run();
 

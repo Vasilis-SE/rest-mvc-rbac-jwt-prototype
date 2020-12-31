@@ -7,8 +7,8 @@ const MongoDB = require('./connections/mongo');
 MongoDB.init();
 
 class Express extends App {
-    constructor(router) {
-        super(router);
+    constructor(router, security) {
+        super(router, security);
 
         this.express = express();
         this.express.use(bodyParser.urlencoded({ extended: true }));

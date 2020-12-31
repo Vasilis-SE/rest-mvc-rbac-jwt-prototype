@@ -1,4 +1,6 @@
 class App {
+
+    // Constructor
     constructor(router, security) {
         this.router = router;
         this.security = security;

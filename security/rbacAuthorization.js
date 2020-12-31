@@ -1,6 +1,8 @@
-const RBAC = require('rbac').default;
+const { RBAC } = require('rbac');
 
 class RBACAuthorization {
+
+    // Constructor
     constructor() {
         this.roles = {
             guest: 3,
@@ -21,19 +23,16 @@ class RBACAuthorization {
             }
         ];
 
-        this.rbac = new RBAC(
+
+        this.rbac = new RBAC (
             {
                 roles: this.accessLevels.map(al => al.role),
                 permissions: {
-                    IndexController: [
-                    'index',
-                    ],
-                    BooksListController: [
-                    'getBooks',
-                    'getBook',
-                    'removeBook',
-                    'rateBook',
-                    ],
+                    CountriesController: [
+                        'getCountries',
+                        'getCountryByID',
+                        'removeCountryByID'
+                    ]
                 },
                 grants: {
                     Guest: [
@@ -58,9 +57,9 @@ class RBACAuthorization {
         );
     }
 
-    getGuestAccessLevel() {
-        return this.accessLevels.find(lvl => lvl.role === this.roles.guest);
-    }
+    // getGuestAccessLevel() {
+    //     return this.accessLevels.find(lvl => lvl.role === this.roles.guest);
+    // }
 
     hasAccess(role, controller, action, cb) {
         this.rbac.can(role, action, controller, cb);
@@ -71,19 +70,24 @@ class RBACAuthorization {
     }
 
     authorize(controller, action) {
+        console.log("--- 1 ---");
+        
         return (req, res, next) => this.rbac.can(req.user.role, action, controller, (err, can) => {
             if (err) return next(err);
+
+            console.log("--- 2 ---");
             if (!can) {
+                console.log("--- 3 ---");
                 const errorResponse = {
                     error_description: {
                         type: 'access_denied',
-                        message: 'Access denied',
-                    },
+                        message: 'Access denied'
+                    }
                 };
                 const accessLevel = this._minNeededAccessLevel(controller, action);
 
                 if (accessLevel != null) {
-                errorResponse.accessLevel = accessLevel;
+                    errorResponse.accessLevel = accessLevel;
                 }
 
                 return res.status(403).send(errorResponse);

@@ -10,6 +10,6 @@ const routersList = new Router([
     new CountryRoutesBuilder()
 ])
 
-const security = new Security( process.env.JWT_SECRET ); // Create security instance
+const security = new Security(); // Create security instance
 const express = new Express(routersList, security);
 express.run();

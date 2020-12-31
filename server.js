@@ -1,11 +1,16 @@
+// External modules
 const Express = require('./express');
+
+// Custom modules
 const Router = require('./routing/router');
 const CountryRoutesBuilder = require('./routing/countryRoutes');
+const Security = require('./security/security');
 
-const express = new Express(
-    new Router([
-        new CountryRoutesBuilder()
-    ])
-);
+const routersList = new Router([
+    new CountryRoutesBuilder()
+])
+
+const security = new Security(config.get('api.security.jwtSecret')); // Create security instance
+const express = new Express(routersList, security);
 
 express.run();

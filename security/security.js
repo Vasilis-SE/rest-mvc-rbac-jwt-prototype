@@ -8,8 +8,7 @@ const RBACAuthorization = require('./RBACAuthorization');
 const UserService = require('../services/userService');
 
 class Security {
-    constructor(repository, jwtSecret) {
-        this.repository = repository;
+    constructor(jwtSecret) {
         this.rbacAuthorization = new RBACAuthorization();
         this.jwtSecret = jwtSecret;
         this._setStrategies();
@@ -66,7 +65,7 @@ class Security {
         passport.use(new BasicStrategy((email, password, done) => {
         let user;
         try {
-            user = this.repository.user.getByEmail(email);
+            // user = this.repository.user.getByEmail(email);
 
             if (!user) return done(null, false);
 

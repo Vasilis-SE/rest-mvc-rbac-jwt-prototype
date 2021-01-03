@@ -1,8 +1,8 @@
 // External modules
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const { BasicStrategy } = require('passport-http');
 const { Strategy: AnonymousStrategy } = require('passport-anonymous');
-const jwt = require('jsonwebtoken');
 const { Strategy: JwtStrategy } = require('passport-jwt');
 
 // Custom modules
@@ -20,7 +20,7 @@ class Security {
         return [
             passport.authenticate('basic', { session: false }), async (req, res) => {
                 const { user } = req;
-
+                console.log('** issueToken **');
                 const token = await jwt.sign({
                     _id: user._id,
                     name: user.name,
@@ -34,34 +34,39 @@ class Security {
     }
 
     authenticate() {
-        return [
-            passport.authenticate(['jwt', 'anonymous'], { session: false }), (req, res, next) => {
-                if (!req.user) req.user = { role: 0 };
-                next();
-            }
-        ];
+        return (req, res, next) => {
+            console.log('** authenticate **');
+            if (!req.user) 
+                req.user = { role: 'guest' };
+
+            next();
+        } 
     }
 
     authorise(controller, action) {
+        console.log('** authorise **');
         return this.rbacAuthorization.authorize(controller, action);
     }
 
     hasAccess(role, controller, action, cb) {
+        console.log('** hasAccess **');
         return this.rbacAuthorization.hasAccess(role, controller, action, cb);
     }
 
     canAny(role, permissions, cb) {
+        console.log('** canAny **');
         return this.rbacAuthorization.canAny(role, permissions, cb);
     }
 
     _setStrategies() {
+        console.log('** _setStrategies **');
         passport.use(new AnonymousStrategy());
 
         passport.use(new BasicStrategy((email, password, done) => {
+            console.log('** BasicStrategy **');
             let user;
             try {
                 // user = this.repository.user.getByEmail(email);
-
                 if (!user) return done(null, false);
 
                 if (!UserService.checkPassword(user.hashedPassword, user.salt, password)) {
@@ -70,6 +75,7 @@ class Security {
 
                 done(null, user);
             } catch (err) {
+                console.log(err);
                 done(err);
             }
         }));
@@ -77,7 +83,10 @@ class Security {
         passport.use(new JwtStrategy({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: process.env.JWT_SECRET,
-        }, (user, done) => done(null, user)));
+        }, (user, done) => { 
+            console.log('** JwtStrategy **');
+            done(null, user);
+        } ));
     }
 }
 

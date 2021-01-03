@@ -4,62 +4,28 @@ class RBACAuthorization {
 
     // Constructor
     constructor() {
-        this.roles = {
-            guest: 3,
-            basic: 2,
-            admin: 1
+        this.access = {
+            'admin': { 
+                level: 1,
+                routes: ['removeCountryByID']
+            },
+            'operator': { 
+                level: 2,
+                routes: []
+            }, 
+            'basic': { 
+                level: 3,
+                routes: [
+                    'getCountries',
+                    'getCountryByID'
+                ]
+            }, 
+            'guest': { 
+                level: 4,
+                routes: []
+            }
         };
-
-        this.accessLevels = [
-            {
-                role: this.roles.guest,
-                level: 10,
-            }, {
-                role: this.roles.basic,
-                level: 20,
-            }, {
-                role: this.roles.admin,
-                level: 30,
-            }
-        ];
-
-
-        this.rbac = new RBAC (
-            {
-                roles: this.accessLevels.map(al => al.role),
-                permissions: {
-                    CountriesController: [
-                        'getCountries',
-                        'getCountryByID',
-                        'removeCountryByID'
-                    ]
-                },
-                grants: {
-                    Guest: [
-                        'index_IndexController',
-                        'getBooks_BooksListController',
-                        'getBook_BooksListController',
-                    ],
-                    BasicUser: [
-                        'Guest',
-                        'rateBook_BooksListController',
-                    ],
-                    AdminUser: [
-                        'BasicUser',
-                        'removeBook_BooksListController',
-                    ],
-                },
-            }, (err) => {
-                if (err) {
-                    throw err;
-                }
-            }
-        );
     }
-
-    // getGuestAccessLevel() {
-    //     return this.accessLevels.find(lvl => lvl.role === this.roles.guest);
-    // }
 
     hasAccess(role, controller, action, cb) {
         this.rbac.can(role, action, controller, cb);
@@ -70,31 +36,28 @@ class RBACAuthorization {
     }
 
     authorize(controller, action) {
-        console.log("--- 1 ---");
-        
-        return (req, res, next) => this.rbac.can(req.user.role, action, controller, (err, can) => {
-            if (err) return next(err);
-
-            console.log("--- 2 ---");
-            if (!can) {
-                console.log("--- 3 ---");
-                const errorResponse = {
-                    error_description: {
-                        type: 'access_denied',
-                        message: 'Access denied'
-                    }
-                };
-                const accessLevel = this._minNeededAccessLevel(controller, action);
-
-                if (accessLevel != null) {
-                    errorResponse.accessLevel = accessLevel;
-                }
-
-                return res.status(403).send(errorResponse);
+        return (req, res, next) => {
+            // If there is no user instance initialized
+            if(!req.user) 
+                return res.status(500).send({'status': false, 'message': 'No user instance...'});
+  
+            // Gather all the routes that the user has access to
+            let eligibleRoutes = [];
+            let userIdx = Object.keys( this.access ).indexOf( req.user.role );
+            let rolesToIterate = Object.keys( this.access ).splice(userIdx, Object.keys( this.access ).length - 1, this.access);
+            for(let role of rolesToIterate) {
+                eligibleRoutes.push( ...this.access[ role ].routes );
             }
 
+            // If the eligible routes are empty (so the user has no access in anything) or the user
+            // does not have access to that specific route.
+            if(eligibleRoutes.length === 0 || !eligibleRoutes.includes(action)) 
+                return res.status(403).send({'status': false, 'message': 'You are not authorized for this process...'});
+            
+            console.log(eligibleRoutes);
+
             next();
-        });
+        };
     }
 
     _minNeededAccessLevel(controller, action) {

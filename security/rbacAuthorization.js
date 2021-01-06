@@ -1,5 +1,3 @@
-const { RBAC } = require('rbac');
-
 class RBACAuthorization {
 
     // Constructor

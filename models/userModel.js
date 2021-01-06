@@ -41,8 +41,8 @@ class UserModel extends ModelBase {
     async createUser() {
         try {
             const collection = await MongoDB.usersCollection();
-            const user = await collection.find({ _id: ObjectID( this.getID() ) }).toArray();
-            return true;
+            const result = await collection.insertOne( this.getResource() );
+            return result.insertedCount === 1 ? true : false;
         } catch (err) {
             return false;
         }

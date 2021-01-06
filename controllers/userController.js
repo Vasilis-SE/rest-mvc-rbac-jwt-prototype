@@ -52,9 +52,11 @@ class UserController extends ControllerBase {
 
             // Encrypt password 
             await userModel.encryptUserPassword();
-
             
-
+            // Insert new user
+            if(!await userModel.createUser()) throw new Error('Could not create new user...');
+        
+            const resource = await userModel.getResource( userModel );
             this.success({'status': true, 'data': resource});
         } catch (err) {
             this.error({'status': false, 'message': err.message});

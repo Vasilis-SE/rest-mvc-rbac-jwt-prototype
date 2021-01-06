@@ -59,13 +59,6 @@ class CountryModel extends ModelBase {
     getID() { return this._id; }
     getName() { return this.name; }
     getLanguage() { return this.language; }
-    getResource() {
-        let resource = {};
-        for(let [key, value] of Object.entries(this)) {
-            resource[ key ] = value;
-        }
-        return resource;
-    }
 
     setID( id ) { this._id = id; }
     setName( name ) { this.name = name; }

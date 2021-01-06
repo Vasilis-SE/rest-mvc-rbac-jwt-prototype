@@ -6,16 +6,17 @@ class UserController extends ControllerBase {
 
     async getUser() {
         try {
-            // const model = new UserModel();
-            // const result = await model.getUserByID();
-            // if(!result) throw new Error('Could not fetch country list...');
+            if(!this.params[0]) throw new Error('Invalid parameters! Missing user id...');
 
-            // const resources = await Promise.all(result.map(async (countryInst) =>   {
-            //     const resource = await countryInst.getResource();
-            //     return resource;
-            // }));
-            
-            this.success({'status': true, 'data': resources});
+            const userModel = new UserModel();
+            userModel.setID( this.params[0] );
+           
+            const result = await userModel.getUserByID();
+            if(!result) throw new Error('Could not fetch user...');
+
+            const resource = await userModel.getResource( userModel );
+
+            this.success({'status': true, 'data': resource});
         } catch (err) {
             this.error({'status': false, 'message': err.message});
         }

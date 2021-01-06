@@ -43,6 +43,18 @@ class UserController extends ControllerBase {
             if(!await userValidation.checkPasswordStrength(this.body.password)) throw new Error('Property `password` is weak! Try using a combination of special charachters, numbers, lower and upercase letters...');
             if(!await userValidation.isUserRoleValid(this.body.role)) throw new Error('Property `role` has invalid value...');
 
+            // Create user instance
+            const userModel = new UserModel();
+            userModel.setName( this.body.name );
+            userModel.setEmail( this.body.email );
+            userModel.setPassword( this.body.password );
+            userModel.setRole( this.body.role );
+
+            // Encrypt password 
+            await userModel.encryptUserPassword();
+
+            
+
             this.success({'status': true, 'data': resource});
         } catch (err) {
             this.error({'status': false, 'message': err.message});

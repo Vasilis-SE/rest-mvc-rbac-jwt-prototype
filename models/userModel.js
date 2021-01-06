@@ -1,13 +1,28 @@
+// External modules
+const { ObjectID } = require('mongodb');
+const bcrypt = require('bcrypt');
+
 // Custom modules
 const ModelBase = require('./modelBase');
 const MongoDB = require('../connections/mongo');
-const { ObjectID } = require('mongodb');
 
 class UserModel extends ModelBase {
 
     // Constructor
     constructor() {
         super();
+    }
+
+    async encryptUserPassword() {
+        try {
+            const saltRounds = 10;
+            const salt = bcrypt.genSaltSync(saltRounds);
+            const hash = bcrypt.hashSync(this.getPassword(), salt);
+            this.setPassword( hash );
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 
     async getUserByID() {
@@ -17,6 +32,16 @@ class UserModel extends ModelBase {
             
             this.setName( user[0].name );
             this.setRole( user[0].role );
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    async createUser() {
+        try {
+            const collection = await MongoDB.usersCollection();
+            const user = await collection.find({ _id: ObjectID( this.getID() ) }).toArray();
             return true;
         } catch (err) {
             return false;

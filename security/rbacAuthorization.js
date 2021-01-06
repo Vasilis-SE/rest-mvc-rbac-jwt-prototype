@@ -27,14 +27,6 @@ class RBACAuthorization {
         };
     }
 
-    hasAccess(role, controller, action, cb) {
-        this.rbac.can(role, action, controller, cb);
-    }
-
-    canAny(role, permissions, cb) {
-        this.rbac.canAny(role, permissions, cb);
-    }
-
     authorize(controller, action) {
         return (req, res, next) => {
             // If there is no user instance initialized
@@ -58,29 +50,6 @@ class RBACAuthorization {
 
             next();
         };
-    }
-
-    _minNeededAccessLevel(controller, action) {
-        const roles = this._whoCan(controller, action);
-        const rolesAccessLevels = this.accessLevels.filter(al => roles.includes(al.role)).map(al => al.level);
-        return rolesAccessLevels.length > 0 ? Math.min(...rolesAccessLevels) : null;
-    }
-
-    _whoCan(controller, action) {
-        const rolesIncludePermission = [];
-        this.rbac.getRoles((err, roles) => {
-            if (err) throw err;
-
-            roles.forEach((role) => {
-                role.can(action, controller, (err2, can) => {
-                    if (err2) throw err2;
-
-                    if (can) rolesIncludePermission.push(role.name);
-                });
-            });
-        });
-
-        return rolesIncludePermission;
     }
 }
 

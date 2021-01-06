@@ -1,6 +1,7 @@
 // Custom modules
 const ControllerBase = require('./controllerBase');
 const UserModel = require('../models/userModel');
+const userValidation = require('../helpers/userValidation');
 
 class UserController extends ControllerBase {
 
@@ -26,7 +27,20 @@ class UserController extends ControllerBase {
         try {
             console.log( this );
 
-            
+            // Verify request data
+            if(!this.body.name) throw new Error('Missing `name` propery from request...');
+            if(!this.body.email) throw new Error('Missing `email` propery from request...');
+            if(!this.body.password) throw new Error('Missing `password` propery from request...');
+            if(!this.body.role) throw new Error('Missing `role` propery from request...');
+
+            if(this.body.name === '') throw new Error('Property `name` is empty...');
+            if(this.body.email === '') throw new Error('Property `email` is empty...');
+            if(this.body.password === '') throw new Error('Property `password` is empty...');
+            if(this.body.role === '') throw new Error('Property `role` is empty...');
+
+            if(!await userValidation.containsSpecialChars(this.body.name)) throw new Error('Property `name` contians invalid characters...');
+            if(!await userValidation.isEmailValid(this.body.email)) throw new Error('Property `emial` is invalid...');
+
 
             this.success({'status': true, 'data': resource});
         } catch (err) {

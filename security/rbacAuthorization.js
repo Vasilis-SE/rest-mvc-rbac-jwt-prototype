@@ -1,8 +1,10 @@
 class RBACAuthorization {
+    #access = null;
+
 
     // Constructor
     constructor() {
-        this.access = {
+        this.#access = {
             'admin': { 
                 level: 1,
                 routes: ['removeCountryByID']
@@ -33,10 +35,10 @@ class RBACAuthorization {
   
             // Gather all the routes that the user has access to
             let eligibleRoutes = [];
-            let userIdx = Object.keys( this.access ).indexOf( req.user.role );
-            let rolesToIterate = Object.keys( this.access ).splice(userIdx, Object.keys( this.access ).length - 1, this.access);
+            let userIdx = Object.keys( this.#access ).indexOf( req.user.role );
+            let rolesToIterate = Object.keys( this.#access ).splice(userIdx, Object.keys( this.#access ).length - 1, this.#access);
             for(let role of rolesToIterate) {
-                eligibleRoutes.push( ...this.access[ role ].routes );
+                eligibleRoutes.push( ...this.#access[ role ].routes );
             }
 
             // If the eligible routes are empty (so the user has no access in anything) or the user
@@ -49,6 +51,12 @@ class RBACAuthorization {
             next();
         };
     }
+
+
+    // Getters - Setters
+    getAccessList() { return this.#access; }
+
+    setAccessList( access ) { this.#access = access; }
 }
 
 module.exports = RBACAuthorization;

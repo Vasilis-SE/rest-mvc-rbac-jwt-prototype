@@ -19,8 +19,8 @@ class App {
 
     _createRouteBoundAction(controllerClass, method) {
         const result = [
-            this.security.authenticate(),
-            this.security.authorise(controllerClass.name, method),
+            // this.security.authenticate(),
+            // this.security.authorise(controllerClass.name, method),
             (req, res) => {
                 this._buildControllerInstance(controllerClass, req, res)[method]();
             }
@@ -29,9 +29,8 @@ class App {
         return result;
     }
 
-
     _buildControllerInstance(ControllerClass, req, res) {
-        const inst = new ControllerClass({
+        const controller = new ControllerClass({
             params: req.params,
             query: req.query,
             body: req.body,
@@ -41,10 +40,10 @@ class App {
                 }
 
                 res.status(statusCode).send(resource);
-            },
+            }
         });
 
-        return inst;
+        return controller;
     }
 
     run() {

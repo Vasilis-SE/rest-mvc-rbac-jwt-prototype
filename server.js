@@ -3,11 +3,13 @@ const Express = require('./express');
 
 // Custom modules
 const Router = require('./routing/router');
-const CountryRoutesBuilder = require('./routing/countryRoutes');
 const Security = require('./security/security');
+const CountryRoutes = require('./routing/countryRoutes');
+const UserRoutes = require('./routing/userRoutes');
 
 const routersList = new Router([
-    new CountryRoutesBuilder()
+    new CountryRoutes(),
+    new UserRoutes()
 ])
 
 const security = new Security(); // Create security instance

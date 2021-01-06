@@ -5,7 +5,6 @@ const CountriesModel = require('../models/countryModel');
 class CountriesController extends ControllerBase {
     
     async getCountries() {
-        console.log('** getCountries **');
         try {
             const model = new CountriesModel();
             const result = await model.getCountries();

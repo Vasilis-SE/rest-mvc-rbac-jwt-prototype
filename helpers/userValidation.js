@@ -29,15 +29,11 @@ const checkPasswordStrength = async ( pass='' ) => {
     return true;
 };
 
-const isUserRoleValid = async ( role=0 ) => {
+const isUserRoleValid = async ( role='' ) => {
     let rbac = new RBAC();
     let accessList = rbac.getAccessList();
-
-    for(let access of accessList) {
-        if(access.level === role) return true;
-    }
-
-    return false;
+    if(typeof accessList[ role ] === 'undefined') return false;
+    return true;
 };
 
 module.exports = {

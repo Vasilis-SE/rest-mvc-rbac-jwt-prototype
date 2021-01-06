@@ -8,6 +8,7 @@ class UserRoutes extends RoutesBase {
 
     getRoutes() {
         this.addRoute('/user/*', 'get', 'getUser');
+        this.addRoute('/user/create', 'post', 'createUser');
         return this.routes;
     }
     

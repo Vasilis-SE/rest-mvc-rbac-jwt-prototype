@@ -9,7 +9,7 @@ class RBACAuthorization {
             },
             'operator': { 
                 level: 2,
-                routes: []
+                routes: ['getUser']
             }, 
             'basic': { 
                 level: 3,

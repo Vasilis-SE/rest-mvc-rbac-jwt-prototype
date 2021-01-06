@@ -26,10 +26,14 @@ class UserModel extends ModelBase {
     // Getters - Setters
     getID() { return this.id; }
     getName() { return this.name; }
+    getEmail() { return this.email; }
+    getPassword() { return this.password; }
     getRole() { return this.role; }
 
     setID( id ) { this.id = id; }
     setName( name ) { this.name = name; }
+    setEmail( email ) { this.email = email; }
+    setPassword( pass ) { this.password = pass; }
     setRole( role ) { this.role = role; }
 }
 

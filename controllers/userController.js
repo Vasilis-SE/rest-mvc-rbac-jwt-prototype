@@ -22,6 +22,15 @@ class UserController extends ControllerBase {
         }
     }
 
+    async createUser() {
+        try {
+            console.log( this );
+            this.success({'status': true, 'data': resource});
+        } catch (err) {
+            this.error({'status': false, 'message': err.message});
+        }
+    }
+
 }
 
 module.exports = UserController;

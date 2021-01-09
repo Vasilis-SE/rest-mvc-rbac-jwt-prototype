@@ -20,7 +20,7 @@ class App {
     _createRouteBoundAction(controllerClass, method) {
         const result = [
             this.security.authenticate(),
-            this.security.authorise(controllerClass.name, method),
+            this.security.authorise(method),
             (req, res) => {
                 this._buildControllerInstance(controllerClass, req, res)[method]();
             }

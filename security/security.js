@@ -14,16 +14,13 @@ class Security {
         this.rbacAuthorization = new RBACAuthorization();
 
         // Initialize strategies
-        let jwtOptions = {
+        passport.use(new BasicStrategy( this.basicStrategy ));
+        passport.use(new JwtStrategy({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: process.env.JWT_SECRET,
             ignoreExpiration: false
-        };
-
-        passport.use(new BasicStrategy( this.basicStrategy ));
-        passport.use(new JwtStrategy( jwtOptions, this.jwtStrategy ));
+        }, this.jwtStrategy));
     }
-
 
     async basicStrategy(email, password, done) {
         try {                
@@ -48,9 +45,12 @@ class Security {
 
     async jwtStrategy(user, done) {
         try {            
+            console.log( user );
             let userModel = new UserModel();
             userModel.setID( user._id );
             if(!await userModel.getUserByID()) throw new Error('Could not initialize user...');
+
+            console.log( userModel );
 
             done(null, userModel.getResource());
         } catch(err) {
@@ -61,10 +61,9 @@ class Security {
     issueToken() {
         return [
             passport.authenticate('basic', { session: false }), async (req, res) => {
-                console.log('--- 3 ---');
                 let { user } = req;
                 let token = await jwt.sign({ _id: user.id }, process.env.JWT_SECRET, {
-                    expiresIn:  2400000 // 240sec
+                    expiresIn:  120 // 120 sec / 2 mins
                 });
                 
                 res.json({'status': true, 'token': token});
@@ -74,7 +73,7 @@ class Security {
 
     authenticate() {
         return [
-            passport.authenticate(['jwt'], {session: false}), (req, res, next) => {
+            passport.authenticate('jwt', {session: false}), (req, res, next) => {
                 if (!req.user) req.user = { role: 'guest' };
                 next();
             }
@@ -84,7 +83,6 @@ class Security {
     authorise(action) {
         return this.rbacAuthorization.authorize(action);
     }
-
 }
 
 module.exports = Security;

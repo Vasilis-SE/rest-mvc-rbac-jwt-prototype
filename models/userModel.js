@@ -13,6 +13,42 @@ class UserModel extends ModelBase {
         super();
     }
 
+    async getUserByID() {
+        try {
+            const collection = await MongoDB.usersCollection();
+            const user = await collection.find({ _id: ObjectID( this.getID() ) }).toArray();
+            
+            this.setName( user[0].name );
+            this.setRole( user[0].role );
+            this.setPassword( user[0].password );
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    async userExists() {
+        try {
+            const collection = await MongoDB.usersCollection();
+            const result = await collection.findOne( this.getResource() );
+            if(!result) throw new Error();
+
+            return result._id;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    async createUser() {
+        try {
+            const collection = await MongoDB.usersCollection();
+            const result = await collection.insertOne( this.getResource() );
+            return result.insertedCount === 1 ? true : false;
+        } catch (err) {
+            return false;
+        }
+    }
+
     async encryptUserPassword() {
         try {
             const saltRounds = 10;
@@ -25,24 +61,9 @@ class UserModel extends ModelBase {
         }
     }
 
-    async getUserByID() {
+    async checkLoginCredentials( plainPass='' ) {
         try {
-            const collection = await MongoDB.usersCollection();
-            const user = await collection.find({ _id: ObjectID( this.getID() ) }).toArray();
-            
-            this.setName( user[0].name );
-            this.setRole( user[0].role );
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }
-
-    async createUser() {
-        try {
-            const collection = await MongoDB.usersCollection();
-            const result = await collection.insertOne( this.getResource() );
-            return result.insertedCount === 1 ? true : false;
+            return await bcrypt.compare(plainPass, this.getPassword());
         } catch (err) {
             return false;
         }

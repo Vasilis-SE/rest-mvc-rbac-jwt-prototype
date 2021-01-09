@@ -29,6 +29,8 @@ class RBACAuthorization {
 
     authorize(controller, action) {
         return (req, res, next) => {
+            console.log( '----- 2 -----' );
+
             // If there is no user instance initialized
             if(!req.user) 
                 return res.status(500).send({'status': false, 'message': 'No user instance...'});
@@ -44,7 +46,7 @@ class RBACAuthorization {
             // If the eligible routes are empty (so the user has no access in anything) or the user
             // does not have access to that specific route.
             if(eligibleRoutes.length === 0 || !eligibleRoutes.includes(action)) 
-                return res.status(403).send({'status': false, 'message': 'You are not authorized for this process...'});
+                // return res.status(403).send({'status': false, 'message': 'You are not authorized for this process...'});
             
             console.log(eligibleRoutes);
 

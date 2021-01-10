@@ -62,3 +62,9 @@
   RBAC is the acronym of Role Base Access Controll is a method to restrict the access of unwanted users and permitting access to certain resources to certain users.
 </p>
 
+<h3> JWT </h3>
+<p>
+  Is an internet standard for transfering data safely with a signature and/or an ecryption whose payload contains a JSON object. The way it works is that the server generates
+  a token which then sends back to the client. Then the client uses that token to prove his identity and call the various services from the server that generated
+  the token.
+</p>

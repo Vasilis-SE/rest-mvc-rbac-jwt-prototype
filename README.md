@@ -15,7 +15,7 @@
 
 <table>
   <tr>
-    <td>
+    <td width='75%'>
       <ul>
         <li> 
           <b> View: </b> 
@@ -38,7 +38,7 @@
     <td width='25%'>
       <center>
         <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/MVC-Process.svg/200px-MVC-Process.svg.png' />
-        <p> source: Wikepedia </p>
+        <p> source: Wikepedia <a href='https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller#/media/File:MVC-Process.svg'> &#187; </a> </p>
       </center>
     </td>
   </tr>  
@@ -49,21 +49,11 @@
   REST also known as Representational State Transfer is a software architecture for creating web services. By using web services our application can manipulate
   the resources of our app. The REST architecture uses the HTTP protocol to reach those resources with one of the following HTTP methods :
   <ul>
-    <li> 
-      <b> GET: </b> Used to fetch resources. 
-    </li>
-    <li> 
-      <b> PUT: </b> Used for modifying existing resources by completely overriding them.
-    </li>
-    <li> 
-      <b> POST: </b> Used to create resources.
-    </li>
-    <li> 
-      <b> PATCH: </b> Used for modifying partila existing resources. 
-    </li>
-    <li> 
-      <b> DELETE: </b> Used to delete resources.
-    </li>
+    <li> <b> GET: </b> Used to fetch resources. </li>
+    <li> <b> PUT: </b> Used for modifying existing resources by completely overriding them. </li>
+    <li> <b> POST: </b> Used to create resources. </li>
+    <li> <b> PATCH: </b> Used for modifying partila existing resources. </li>
+    <li> <b> DELETE: </b> Used to delete resources. </li>
   </ul>
 </p>
 

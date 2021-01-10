@@ -16,11 +16,11 @@ class Express extends App {
         this.expressRouter = express.Router();
     }
 
-    _registerRoute(uri, httpMethod, boundAction) {
+    initRoutes(uri, httpMethod, boundAction) {
         this.expressRouter.route(uri)[httpMethod](boundAction);
     }
 
-    _registerAuthRoute(boundAction) {
+    initAuthorizationRoutes(boundAction) {
         this.expressRouter.route('/auth/token').post(boundAction);
     }
 

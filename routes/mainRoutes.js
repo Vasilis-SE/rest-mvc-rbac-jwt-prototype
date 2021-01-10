@@ -5,12 +5,7 @@ class MainRoutes {
     }
 
     addRoute(uri, httpMethod, action) {
-        this.routes.push({
-            controllerClass: this.ControllerClass,
-            action,
-            uri,
-            httpMethod,
-        });
+        this.routes.push({ controllerClass: this.ControllerClass, action, uri, httpMethod });
     }
 }
 

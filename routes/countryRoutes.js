@@ -1,5 +1,6 @@
-const CountryController = require('../controllers/countryController');
+// Custom modules
 const MainRoutes = require('./mainRoutes');
+const CountryController = require('../controllers/countryController');
 
 class ContryRoutes extends MainRoutes {
     constructor() {

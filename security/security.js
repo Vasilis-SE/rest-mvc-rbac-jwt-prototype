@@ -57,26 +57,33 @@ class Security {
     }
 
     generateToken() {
+        let jwtGenOptions = { session: false, failWithError: true };
+
         return [
-            passport.authenticate('basic', { session: false }), async (req, res) => {
+            passport.authenticate('basic', jwtGenOptions), 
+            async (req, res) => {
                 let { user } = req;
                 let token = await jwt.sign({ _id: user.id }, process.env.JWT_SECRET, {
-                    expiresIn:  480 // 480 sec / 8 mins
+                    expiresIn:  240 // 240 sec / 4 mins
                 });
                 
-                res.json({'status': true, 'token': token});
+                res.status(200).send({'status': true, 'token': token});
+            }, (err, req, res) => {
+                return res.status(401).send({ 'status':false, 'error_code':'GEN_TOKEN', 'message':'Could not generate token...' })
             }
         ];
     }
 
     authenticate() {
+        let jwtAuthOptions = { session: false, failWithError: true };
+        
         return [
-            passport.authenticate('jwt', {session: false}), 
+            passport.authenticate('jwt', jwtAuthOptions), 
             (req, res, next) => {
                 if (!req.user) req.user = { role: 'guest' };
                 next();
             }, (err, req, res, next) => {
-                return res.status(401).send({ 'status': false, 'message': err })
+                return res.status(401).send({ 'status':false, 'error_code':'EXP_TOKEN', 'message':'Your token has been expired...' })
             }
         ]
     }

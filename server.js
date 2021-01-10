@@ -2,16 +2,16 @@
 const Express = require('./express');
 
 // Custom modules
-const Router = require('./routing/router');
+const Router = require('./routes/router');
 const Security = require('./security/security');
-const CountryRoutes = require('./routing/countryRoutes');
-const UserRoutes = require('./routing/userRoutes');
+const CountryRoutes = require('./routes/countryRoutes');
+const UserRoutes = require('./routes/userRoutes');
 
-const routersList = new Router([
+const routerList = new Router([
     new CountryRoutes(),
     new UserRoutes()
 ])
 
 const security = new Security(); // Create security instance
-const express = new Express(routersList, security);
+const express = new Express(routerList, security);
 express.run();

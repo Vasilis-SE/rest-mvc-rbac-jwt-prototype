@@ -1,8 +1,8 @@
 // Custom modules
-const ControllerBase = require('./controllerBase');
+const mainController = require('./mainController');
 const CountriesModel = require('../models/countryModel');
 
-class CountriesController extends ControllerBase {
+class CountriesController extends mainController {
     
     async getCountries() {
         try {

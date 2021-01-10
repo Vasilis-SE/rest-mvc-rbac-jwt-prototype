@@ -1,4 +1,4 @@
-class RoutesBase {
+class MainRoutes {
     constructor(controllerClass) {
         this.routes = [];
         this.ControllerClass = controllerClass;
@@ -14,4 +14,4 @@ class RoutesBase {
     }
 }
 
-module.exports = RoutesBase;
+module.exports = MainRoutes;

@@ -1,7 +1,7 @@
 const CountryController = require('../controllers/countryController');
-const RoutesBase = require('./routesBase');
+const MainRoutes = require('./mainRoutes');
 
-class ContryRoutes extends RoutesBase {
+class ContryRoutes extends MainRoutes {
     constructor() {
         super( CountryController );
     }

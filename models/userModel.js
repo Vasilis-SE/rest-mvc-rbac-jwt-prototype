@@ -3,12 +3,10 @@ const { ObjectID } = require('mongodb');
 const bcrypt = require('bcrypt');
 
 // Custom modules
-const ModelBase = require('./modelBase');
+const MainModel = require('./mainModel');
 const MongoDB = require('../connections/mongo');
 
-class UserModel extends ModelBase {
-
-    // Constructor
+class UserModel extends MainModel {
     constructor() {
         super();
     }

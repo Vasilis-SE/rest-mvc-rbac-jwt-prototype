@@ -1,4 +1,4 @@
-class RBACAuthorization {
+class RBAC {
     #access = null;
 
     // Constructor
@@ -52,8 +52,7 @@ class RBACAuthorization {
 
     // Getters - Setters
     getAccessList() { return this.#access; }
-
     setAccessList( access ) { this.#access = access; }
 }
 
-module.exports = RBACAuthorization;
+module.exports = RBAC;

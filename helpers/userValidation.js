@@ -3,7 +3,7 @@ const validator = require("email-validator");
 const passwordStrength = require('check-password-strength');
 
 // Custome modules
-const RBAC = require('../security/rbacAuthorization');
+const RBAC = require('../security/rbac');
 
 const containsSpecialChars = async ( string ) => {
     let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/; // Special chars

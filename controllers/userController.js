@@ -1,9 +1,9 @@
 // Custom modules
-const ControllerBase = require('./controllerBase');
+const mainController = require('./mainController');
 const UserModel = require('../models/userModel');
 const userValidation = require('../helpers/userValidation');
 
-class UserController extends ControllerBase {
+class UserController extends mainController {
 
     async getUser() {
         try {

@@ -1,4 +1,4 @@
-class ControllerBase {
+class mainController {
     constructor({ params, query, body, send }) {
         this.params = params;
         this.query = query;
@@ -15,4 +15,4 @@ class ControllerBase {
     error(err) { this.send(500, err); }
 }
 
-module.exports = ControllerBase;
+module.exports = mainController;

@@ -48,7 +48,7 @@ class App {
 
     run() {
         this.router.registerRoutes(this._registerRoute, this._createRouteBoundAction);
-        this._registerAuthRoute(this.security.issueToken());
+        this._registerAuthRoute(this.security.generateToken());
     }
 }
 

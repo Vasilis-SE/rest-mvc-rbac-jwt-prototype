@@ -1,7 +1,7 @@
 const UserController = require('../controllers/userController');
-const RoutesBase = require('./routesBase');
+const MainRoutes = require('./mainRoutes');
 
-class UserRoutes extends RoutesBase {
+class UserRoutes extends MainRoutes {
     constructor() {
         super( UserController );
     }

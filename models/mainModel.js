@@ -1,4 +1,4 @@
-class ModelBase {
+class mainModel {
     getResource() {
         let resource = {};
         for(let [key, value] of Object.entries(this)) {
@@ -8,4 +8,4 @@ class ModelBase {
     }
 }
 
-module.exports = ModelBase;
+module.exports = mainModel;

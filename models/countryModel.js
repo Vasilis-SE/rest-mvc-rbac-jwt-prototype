@@ -1,11 +1,9 @@
 // Custom modules
-const ModelBase = require('./modelBase');
+const MainModel = require('./mainModel');
 const MongoDB = require('../connections/mongo');
 const { ObjectID } = require('mongodb');
 
-class CountryModel extends ModelBase {
-
-    // Constructor
+class CountryModel extends MainModel {
     constructor() {
         super();
     }

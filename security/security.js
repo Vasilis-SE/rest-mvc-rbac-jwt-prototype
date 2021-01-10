@@ -6,12 +6,12 @@ const { Strategy: JwtStrategy } = require('passport-jwt');
 
 // Custom modules
 const { ExtractJwt } = require('passport-jwt');
-const RBACAuthorization = require('./rbacAuthorization');
+const RBAC = require('./rbac');
 const UserModel = require('../models/userModel');
 
 class Security {
     constructor() {
-        this.rbacAuthorization = new RBACAuthorization();
+        this.rbac = new RBAC();
 
         // Initialize strategies
         passport.use(new BasicStrategy( this.basicStrategy ));
@@ -45,12 +45,10 @@ class Security {
 
     async jwtStrategy(user, done) {
         try {            
-            console.log( user );
             let userModel = new UserModel();
             userModel.setID( user._id );
-            if(!await userModel.getUserByID()) throw new Error('Could not initialize user...');
 
-            console.log( userModel );
+            if(!await userModel.getUserByID()) throw new Error('Could not initialize user...');
 
             done(null, userModel.getResource());
         } catch(err) {
@@ -58,12 +56,12 @@ class Security {
         }
     }
 
-    issueToken() {
+    generateToken() {
         return [
             passport.authenticate('basic', { session: false }), async (req, res) => {
                 let { user } = req;
                 let token = await jwt.sign({ _id: user.id }, process.env.JWT_SECRET, {
-                    expiresIn:  120 // 120 sec / 2 mins
+                    expiresIn:  480 // 480 sec / 8 mins
                 });
                 
                 res.json({'status': true, 'token': token});
@@ -73,15 +71,18 @@ class Security {
 
     authenticate() {
         return [
-            passport.authenticate('jwt', {session: false}), (req, res, next) => {
+            passport.authenticate('jwt', {session: false}), 
+            (req, res, next) => {
                 if (!req.user) req.user = { role: 'guest' };
                 next();
+            }, (err, req, res, next) => {
+                return res.status(401).send({ 'status': false, 'message': err })
             }
         ]
     }
 
     authorise(action) {
-        return this.rbacAuthorization.authorize(action);
+        return this.rbac.authorize(action);
     }
 }
 

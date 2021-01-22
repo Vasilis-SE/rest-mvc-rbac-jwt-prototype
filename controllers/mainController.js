@@ -1,8 +1,9 @@
 class mainController {
-    constructor({ params, query, body, send }) {
+    constructor({ params, query, body, user, send }) {
         this.params = params;
         this.query = query;
         this.body = body;
+        this.user = user;
         this.send = send;
     }
 

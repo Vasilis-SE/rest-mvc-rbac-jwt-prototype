@@ -34,6 +34,7 @@ class App {
             params: req.params,
             query: req.query,
             body: req.body,
+            user: req.user,
             send: (statusCode, resource, location) => {
                 if (location) {
                     res.location(location);

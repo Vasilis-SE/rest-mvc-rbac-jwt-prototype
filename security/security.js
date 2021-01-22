@@ -7,7 +7,7 @@ const { Strategy: JwtStrategy } = require('passport-jwt');
 // Custom modules
 const { ExtractJwt } = require('passport-jwt');
 const RBAC = require('./rbac');
-const UserModel = require('../models/userModel');
+const UserService = require('../services/userService');
 
 class Security {
     constructor() {
@@ -64,7 +64,7 @@ class Security {
             async (req, res) => {
                 let { user } = req;
                 let token = await jwt.sign({ _id: user.id }, process.env.JWT_SECRET, {
-                    expiresIn:  240 // 240 sec / 4 mins
+                    expiresIn:  7200 // 7200 sec / 2 hours
                 });
                 
                 res.status(200).send({'status': true, 'token': token});

@@ -1,23 +1,20 @@
 // Custom modules
 const mainController = require('./mainController');
-const UserModel = require('../models/userModel');
+// const UserModel = require('../models/userModel');
+const UserService = require('../services/userService');
 const userValidation = require('../helpers/userValidation');
+
 
 class UserController extends mainController {
 
-    async getUser() {
+    async getUserById() {
         try {
-            if(!this.params[0]) throw new Error('Invalid parameters! Missing user id...');
+            console.log(this)
 
-            const userModel = new UserModel();
-            userModel.setID( this.params[0] );
-           
-            const result = await userModel.getUserByID();
-            if(!result) throw new Error('Could not fetch user...');
+            const userService = new UserService();
+            userService.getUser( this.params );
 
-            const resource = await userModel.getResource( userModel );
 
-            this.success({'status': true, 'data': resource});
         } catch (err) {
             this.error({'status': false, 'message': err.message});
         }

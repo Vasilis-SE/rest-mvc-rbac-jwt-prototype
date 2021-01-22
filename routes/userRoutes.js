@@ -7,7 +7,7 @@ class UserRoutes extends MainRoutes {
     }
 
     getRoutes() {
-        this.addRoute('/user/*', 'get', 'getUser');
+        this.addRoute('/user/*', 'get', 'getUserById');
         this.addRoute('/user/create', 'post', 'createUser');
         return this.routes;
     }

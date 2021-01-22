@@ -11,10 +11,10 @@ class UserModel extends MainModel {
         super();
     }
 
-    async getUserByID() {
+    async getUsers() {
         try {
             const collection = await MongoDB.usersCollection();
-            const user = await collection.find({ _id: ObjectID( this.getID() ) }).toArray();
+            const user = await collection.find( this.getResource() ).toArray();
             
             this.setName( user[0].name );
             this.setRole( user[0].role );
@@ -74,7 +74,7 @@ class UserModel extends MainModel {
     getPassword() { return this.password; }
     getRole() { return this.role; }
 
-    setID( id ) { this.id = id; }
+    setID( id ) { this.id = ObjectID( id ); }
     setName( name ) { this.name = name; }
     setEmail( email ) { this.email = email; }
     setPassword( pass ) { this.password = pass; }

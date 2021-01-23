@@ -1,6 +1,5 @@
 // Custom modules
 const mainController = require('./mainController');
-// const UserModel = require('../models/userModel');
 const UserService = require('../services/userService');
 const userValidation = require('../helpers/userValidation');
 
@@ -8,16 +7,8 @@ const userValidation = require('../helpers/userValidation');
 class UserController extends mainController {
 
     async getUserById() {
-        try {
-            console.log(this)
-
-            const userService = new UserService();
-            userService.getUser( this.params );
-
-
-        } catch (err) {
-            this.error({'status': false, 'message': err.message});
-        }
+        const userService = new UserService( this );
+        userService.getUserById();
     }
 
     async createUser() {

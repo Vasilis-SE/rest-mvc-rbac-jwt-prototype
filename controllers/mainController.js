@@ -5,7 +5,12 @@ class mainController {
         this.body = body;
         this.user = user;
         this.send = send;
+
+        this.responseCode = 200;
+        this.response = {};
     }
+
+
 
     success(data) { this.send(200, data); }
     created(data) { this.send(201, data); }
@@ -14,6 +19,12 @@ class mainController {
     badrequest() { this.send(400); }
     unauthorized() { this.send(401); }
     error(err) { this.send(500, err); }
+
+    getResponse() { return this.response; }
+    setResponse(c, r) { 
+        this.responseCode = c; 
+        this.response = r; 
+    }
 }
 
 module.exports = mainController;

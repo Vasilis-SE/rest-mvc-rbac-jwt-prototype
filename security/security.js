@@ -7,6 +7,8 @@ const { Strategy: JwtStrategy } = require('passport-jwt');
 // Custom modules
 const { ExtractJwt } = require('passport-jwt');
 const RBAC = require('./rbac');
+
+const MainController = require('../controllers/mainController');
 const UserService = require('../services/userService');
 
 class Security {
@@ -22,22 +24,15 @@ class Security {
         }, this.jwtStrategy));
     }
 
-    async basicStrategy(email, password, done) {
-        try {                
-            let userModel = new UserModel();
-            userModel.setEmail( email );
+    async basicStrategy(username, password, done) {
+        try { 
+            const mainc = new MainController({'body': {username, password}});
+            const userService = new UserService( mainc );
 
-            let result = await userModel.userExists();
-            if(!result) throw new Error('Could not find user...');
-            
-            // If user is found then init the users object
-            userModel.setID( result );
-            if(!await userModel.getUserByID()) throw new Error('Could not initialize user...');
+            await userService.checkUserLogin();
 
-            // Check login password credentials
-            if(!await userModel.checkLoginCredentials( password )) throw new Error('Invalid credentials given...');
 
-            done(null, userModel.getResource());
+            // done(null, userModel.getResource());
         } catch(err) {
             done(err);
         }

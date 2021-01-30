@@ -10,14 +10,11 @@ class RBAC {
             },
             'operator': { 
                 level: 2,
-                routes: ['getUserById']
+                routes: ['getUserById', 'createUser']
             }, 
             'basic': { 
                 level: 3,
-                routes: [
-                    'getCountries',
-                    'getCountryByID'
-                ]
+                routes: ['getCountries', 'getCountryByID']
             }, 
             'guest': { 
                 level: 4,

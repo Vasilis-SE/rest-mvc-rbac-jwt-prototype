@@ -10,7 +10,7 @@ class UserModel extends MainModel {
     constructor({_id, name, email, password, role}) {
         super();
 
-        this._id = ObjectID(_id);
+        this._id = _id ? ObjectID(_id) : null;
         this.name = name;
         this.email = email;
         this.password = password;

@@ -8,7 +8,8 @@ class UserController extends mainController {
 
     async getUserById() {
         const userService = new UserService( this );
-        userService.getUserById();
+        await userService.getUserByID();        
+        userService.getController().sendResponse();
     }
 
     async createUser() {

@@ -7,19 +7,26 @@ const MainModel = require('./mainModel');
 const MongoDB = require('../connections/mongo');
 
 class UserModel extends MainModel {
-    constructor() {
+    constructor({_id, name, email, password, role}) {
         super();
+
+        this._id = ObjectID(_id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     async getUsers() {
-        try {
+        try {            
             const collection = await MongoDB.usersCollection();
-            const user = await collection.find( this.getResource() ).toArray();
+            const users = await collection.find( this.getResource() ).toArray();
+
+            let userList = [];
+            for(let user of users) 
+                userList.push( new UserModel( user ) );
             
-            this.setName( user[0].name );
-            this.setRole( user[0].role );
-            this.setPassword( user[0].password );
-            return true;
+            return userList;
         } catch (err) {
             return false;
         }
@@ -59,7 +66,7 @@ class UserModel extends MainModel {
         }
     }
 
-    async checkLoginCredentials( plainPass='' ) {
+    async comparePlainPassword( plainPass='' ) {
         try {
             return await bcrypt.compare(plainPass, this.getPassword());
         } catch (err) {
@@ -68,13 +75,13 @@ class UserModel extends MainModel {
     }
 
     // Getters - Setters
-    getID() { return this.id; }
+    getID() { return this._id; }
     getName() { return this.name; }
     getEmail() { return this.email; }
     getPassword() { return this.password; }
     getRole() { return this.role; }
 
-    setID( id ) { this.id = ObjectID( id ); }
+    setID( id ) { this._id = ObjectID( id ); }
     setName( name ) { this.name = name; }
     setEmail( email ) { this.email = email; }
     setPassword( pass ) { this.password = pass; }

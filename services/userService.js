@@ -9,21 +9,38 @@ class UserService {
 
     async checkUserLogin() {
         try {
-            if(!this.#controller.body.username) throw new Error('The username is missing...');
-            if(!this.#controller.body.password) throw new Error('The password is missing...');
+            if(!this.getController().body.username) throw new Error('The username is missing...');
+            if(!this.getController().body.password) throw new Error('The password is missing...');
 
-            const user = new UserModel();
-            user.setName( this.#controller.body.username );
-            user.setPassword( this.#controller.body.password );
+            const user = new UserModel({name: this.getController().body.username});
+            const userList = await user.getUsers();
 
-            if(!await user.getUsers()) throw new Error('Could not find user with the given credentials...');
-            if(!await user.checkLoginCredentials( this.#controller.body.password )) throw new Error('Could not find user with the given credentials...');
+            if(!userList) throw new Error('Could not find user with the given credentials...');
+            if(!await userList[0].comparePlainPassword( this.getController().body.password )) throw new Error('Could not find user with the given credentials...');
 
-            return this.#controller.setResponse(200, {'status': true});
+            return this.getController().setResponse(200, {'status': true, 'data':userList[0].getResource()});
         } catch (err) {
-            return this.#controller.setResponse(500, {'status': true});
+            return this.getController().setResponse(500, {'status': false, 'message': err.message});
         }
     }
+
+    async getUserByID() {
+        try {
+            if(!this.getController().params[0]) throw new Error('The user`s id is missing...');
+            const user = new UserModel({_id:this.getController().params[0]});            
+            const results = await user.getUsers();
+            if(!results) throw new Error('Could not find user with the given credentials...');
+            return this.getController().setResponse(200, {'status': true, 'data':results[0].getResource()});
+        } catch (err) {
+            return this.getController().setResponse(500, {'status': false, 'message': err.message});
+        }
+    }
+
+
+
+
+
+
 
     async getUsers() {
         try {

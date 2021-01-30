@@ -26,26 +26,23 @@ class Security {
 
     async basicStrategy(username, password, done) {
         try { 
-            const mainc = new MainController({'body': {username, password}});
-            const userService = new UserService( mainc );
-
+            const userService = new UserService( new MainController({'body': {username, password}}) );
             await userService.checkUserLogin();
 
-
-            // done(null, userModel.getResource());
+            if(!userService.getController().response.status) throw new Error('Could not find user with the given credentials...');
+            done(null, userService.getController().response.data);
         } catch(err) {
             done(err);
         }
     }
 
     async jwtStrategy(user, done) {
-        try {            
-            let userModel = new UserModel();
-            userModel.setID( user._id );
+        try {  
+            const userService = new UserService( new MainController({'params': [user._id]}) ); 
+            await userService.getUserByID();
 
-            if(!await userModel.getUserByID()) throw new Error('Could not initialize user...');
-
-            done(null, userModel.getResource());
+            if(!userService.getController().response.status) throw new Error('Could not initialize user...');
+            done(null, userService.getController().response.data);
         } catch(err) {
             done(err);
         }
@@ -58,8 +55,9 @@ class Security {
             passport.authenticate('basic', jwtGenOptions), 
             async (req, res) => {
                 let { user } = req;
-                let token = await jwt.sign({ _id: user.id }, process.env.JWT_SECRET, {
-                    expiresIn:  7200 // 7200 sec / 2 hours
+
+                let token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+                    expiresIn:  14400 // 14400 sec / 4 hours
                 });
                 
                 res.status(200).send({'status': true, 'token': token});
@@ -69,11 +67,9 @@ class Security {
         ];
     }
 
-    authenticate() {
-        let jwtAuthOptions = { session: false, failWithError: true };
-        
+    authenticate() {        
         return [
-            passport.authenticate('jwt', jwtAuthOptions), 
+            passport.authenticate('jwt', { session: false, failWithError: true }), 
             (req, res, next) => {
                 if (!req.user) req.user = { role: 'guest' };
                 next();

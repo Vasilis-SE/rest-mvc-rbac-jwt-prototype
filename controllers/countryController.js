@@ -1,6 +1,7 @@
 // Custom modules
 const mainController = require('./mainController');
 const CountryService = require('../services/countryService');
+const c = require('config');
 
 class CountriesController extends mainController {
     
@@ -8,22 +9,6 @@ class CountriesController extends mainController {
         const countryService = new CountryService( this );
         await countryService.getCountries();
         countryService.getController().sendResponse();
-    }
-
-    async getCountryByID() {
-        try {
-            const { id } = this.params;
-            const countryModel = new CountriesModel();
-            countryModel.setID( id );
-
-            const result = await countryModel.getCountry();
-            if(!result) throw new Error('Could not fetch country...');
-
-            const resource = await countryModel.getResource( countryModel );
-            this.success({'status': true, 'data': resource});
-        } catch (err) {
-            this.error({'status': false, 'message': err.message});
-        }
     }
 
     async removeCountryByID() {

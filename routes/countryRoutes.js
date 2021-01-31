@@ -9,8 +9,8 @@ class ContryRoutes extends MainRoutes {
 
     getRoutes() {
         this.addRoute('/countries', 'get', 'getCountries');
-        this.addRoute('/countries/:id', 'get', 'getCountryByID');
-        this.addRoute('/countries/:id', 'delete', 'removeCountryByID');
+        this.addRoute('/countries/:_id', 'get', 'getCountries');
+        this.addRoute('/countries/:_id', 'delete', 'removeCountryByID');
         return this.routes;
     }
     

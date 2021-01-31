@@ -9,7 +9,8 @@ class CountryService {
 
     async getCountries() {
         try {
-            const country = new CountriesModel(this.#controller.query);
+            let bindedFilters = {...this.#controller.params, ...this.#controller.query};
+            const country = new CountriesModel(bindedFilters);
             const result = await country.getCountries();
             if(!result) throw new Error('Could not fetch country list...');
     

@@ -4,7 +4,6 @@ const CountryService = require('../services/countryService');
 const c = require('config');
 
 class CountriesController extends mainController {
-    
     async getCountries() {
         const countryService = new CountryService( this );
         await countryService.getCountries();
@@ -12,18 +11,9 @@ class CountriesController extends mainController {
     }
 
     async removeCountryByID() {
-        try {
-            const { id } = this.params;
-            const countryModel = new CountriesModel();
-            countryModel.setID( id );
-
-            const result = await countryModel.removeCountry();
-            if(!result) throw new Error('Could not delete country...');
-
-            this.success({'status': true, 'message': 'Successfull deletion!'});
-        } catch (err) {
-            this.error({'status': false, 'message': err});
-        }
+        const countryService = new CountryService( this );
+        await countryService.deleteCountries();
+        countryService.getController().sendResponse();
     }
 }
 

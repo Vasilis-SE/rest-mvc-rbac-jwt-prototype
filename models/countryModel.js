@@ -27,12 +27,11 @@ class CountryModel extends MainModel {
         }
     }
 
-    async removeCountry() {
+    async removeCountries() {
         try {
             const collection = await MongoDB.countriesCollection();
-            const result = await collection.deleteOne({ _id: ObjectID(id) });
-            if(result.deletedCount !== 1) return false;
-            
+            const result = await collection.deleteMany( this.getResource() );
+            if(result.deletedCount === 0) return false;
             return true;
         } catch (err) {
             return false;

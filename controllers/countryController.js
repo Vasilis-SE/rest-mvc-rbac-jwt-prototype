@@ -1,24 +1,13 @@
 // Custom modules
 const mainController = require('./mainController');
-
+const CountryService = require('../services/countryService');
 
 class CountriesController extends mainController {
     
     async getCountries() {
-        try {
-            const model = new CountriesModel();
-            const result = await model.getCountries();
-            if(!result) throw new Error('Could not fetch country list...');
-
-            const resources = await Promise.all(result.map(async (countryInst) =>   {
-                const resource = await countryInst.getResource();
-                return resource;
-            }));
-            
-            this.success({'status': true, 'data': resources});
-        } catch (err) {
-            this.error({'status': false, 'message': err.message});
-        }
+        const countryService = new CountryService( this );
+        await countryService.getCountries();
+        countryService.getController().sendResponse();
     }
 
     async getCountryByID() {

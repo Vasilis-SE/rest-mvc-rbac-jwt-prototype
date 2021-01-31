@@ -18,28 +18,10 @@ class CountryModel extends MainModel {
             const countries = await collection.find( this.getResource() ).toArray();
 
             const countryList = [];
-            for(let country of countries) {
-                let tempCountry = new CountryModel();
-                tempCountry.setID( country._id );
-                tempCountry.setName( country.name );
-                tempCountry.setLanguage( country.language );
-
-                countryList.push(tempCountry);
-            }
- 
+            for(let country of countries) 
+                countryList.push( new CountryModel( country ) );
+            
             return countryList;
-        } catch (err) {
-            return false;
-        }
-    }
-
-    async getCountry() {
-        try {
-            const collection = await MongoDB.countriesCollection();
-            const country = await collection.find({ _id: ObjectID( this.getID() ) }).toArray();
-            this.setName( country[0].name );
-            this.setLanguage( country[0].language );
-            return true;
         } catch (err) {
             return false;
         }

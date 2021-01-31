@@ -4,14 +4,18 @@ const MongoDB = require('../connections/mongo');
 const { ObjectID } = require('mongodb');
 
 class CountryModel extends MainModel {
-    constructor() {
+    constructor({_id, name, language}) {
         super();
+
+        this._id = _id ? ObjectID(_id) : null;
+        this.name = name;
+        this.language = language;
     }
 
     async getCountries() {
         try {
             const collection = await MongoDB.countriesCollection();
-            const countries = await collection.find({}).toArray();
+            const countries = await collection.find( this.getResource() ).toArray();
 
             const countryList = [];
             for(let country of countries) {
@@ -58,7 +62,7 @@ class CountryModel extends MainModel {
     getName() { return this.name; }
     getLanguage() { return this.language; }
 
-    setID( id ) { this._id = id; }
+    setID( id ) { this._id = ObjectID(id); }
     setName( name ) { this.name = name; }
     setLanguage( language ) { this.language = language; }
 } // End of class

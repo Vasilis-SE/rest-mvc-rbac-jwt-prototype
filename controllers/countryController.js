@@ -1,6 +1,6 @@
 // Custom modules
 const mainController = require('./mainController');
-const CountriesModel = require('../models/countryModel');
+
 
 class CountriesController extends mainController {
     

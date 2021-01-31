@@ -10,7 +10,7 @@ class RBAC {
             },
             'operator': { 
                 level: 2,
-                routes: ['getUserById', 'createUser']
+                routes: ['getUsers', 'createUser']
             }, 
             'basic': { 
                 level: 3,

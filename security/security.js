@@ -26,9 +26,8 @@ class Security {
 
     async basicStrategy(username, password, done) {
         try { 
-            const userService = new UserService( new MainController({'body': {username, password}}) );
+            const userService = new UserService( new MainController({'params': {username, password}}) );
             await userService.checkUserLogin();
-
             if(!userService.getController().response.status) throw new Error('Could not find user with the given credentials...');
             done(null, userService.getController().response.data);
         } catch(err) {
@@ -38,11 +37,13 @@ class Security {
 
     async jwtStrategy(user, done) {
         try {  
-            const userService = new UserService( new MainController({'params': [user._id]}) ); 
-            await userService.getUserByID();
-
+            const userService = new UserService( new MainController({'params': {'_id': user._id}}) ); 
+            await userService.getUsers();
+            
             if(!userService.getController().response.status) throw new Error('Could not initialize user...');
-            done(null, userService.getController().response.data);
+            let userInstance = userService.getController().response.data[0];
+
+            done(null, userInstance);
         } catch(err) {
             done(err);
         }

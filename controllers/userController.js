@@ -3,9 +3,9 @@ const mainController = require('./mainController');
 const UserService = require('../services/userService');
 
 class UserController extends mainController {
-    async getUserById() {
+    async getUsers() {
         const userService = new UserService( this );
-        await userService.getUserByID();        
+        await userService.getUsers();        
         userService.getController().sendResponse();
     }
 

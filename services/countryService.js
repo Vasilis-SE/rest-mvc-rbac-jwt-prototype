@@ -9,8 +9,10 @@ class CountryService {
 
     async getCountries() {
         try {
-            let bindedFilters = {...this.#controller.params, ...this.#controller.query};
-            const country = new CountriesModel(bindedFilters);
+            // Bind all data for the query
+            let queryProperties = {...this.#controller.params, ...this.#controller.query};
+
+            const country = new CountriesModel(queryProperties);
             const result = await country.getCountries();
 
             if(!result) throw new Error('Could not fetch country list...');
@@ -29,8 +31,8 @@ class CountryService {
 
     async deleteCountries() {
         try {
-            let bindedFilters = {...this.#controller.params, ...this.#controller.query};
-            const country = new CountriesModel(bindedFilters);
+            let queryProperties = {...this.#controller.params, ...this.#controller.query};
+            const country = new CountriesModel(queryProperties);
             console.log( country );
             const result = await country.removeCountries();
 

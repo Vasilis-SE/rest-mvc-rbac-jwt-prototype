@@ -10,14 +10,15 @@ class UserService {
 
     async checkUserLogin() {
         try {
-            if(!this.#controller.body.username) throw new Error('The username is missing...');
-            if(!this.#controller.body.password) throw new Error('The password is missing...');
+            const queryProperties = this.#controller.params;
+            if(!queryProperties.username) throw new Error('The username is missing...');
+            if(!queryProperties.password) throw new Error('The password is missing...');
 
-            const user = new UserModel({name: this.#controller.body.username});
+            const user = new UserModel({name: queryProperties.username});
             const userList = await user.getUsers();
 
             if(!userList) throw new Error('Could not find user with the given credentials...');
-            if(!await userList[0].comparePlainPassword( this.#controller.body.password )) throw new Error('Could not find user with the given credentials...');
+            if(!await userList[0].comparePlainPassword( queryProperties.password )) throw new Error('Could not find user with the given credentials...');
 
             return this.#controller.setResponse(200, {'status': true, 'data':userList[0].getResource()});
         } catch (err) {
@@ -25,17 +26,31 @@ class UserService {
         }
     }
 
-    async getUserByID() {
+    async getUsers() {
         try {
-            if(!this.#controller.params[0]) throw new Error('The user`s id is missing...');
-            const user = new UserModel({_id:this.#controller.params[0]});            
+            let queryProperties = {...this.#controller.params, ...this.#controller.query};
+
+            const user = new UserModel( queryProperties );            
             const results = await user.getUsers();
+
             if(!results) throw new Error('Could not find user with the given credentials...');
-            return this.#controller.setResponse(200, {'status': true, 'data':results[0].getResource()});
+            
+            const resources = await Promise.all(results.map(async (userInstance) => {
+                const resource = await userInstance.getResource();
+                delete resource.password;
+                return resource;
+            }));
+
+            return this.#controller.setResponse(200, {'status': true, 'data':resources});
         } catch (err) {
             return this.#controller.setResponse(500, {'status': false, 'message': err.message});
         }
     }
+
+
+
+
+
 
     async createNewUser() {
         try {     

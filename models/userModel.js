@@ -10,17 +10,21 @@ class UserModel extends MainModel {
     constructor({_id, name, email, password, role}) {
         super();
 
-        this._id = _id ? ObjectID(_id) : null;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+        this.setID( _id );
+        this.setName( name );
+        this.setEmail( email );
+        this.setPassword( password );
+        this.setRole( role );
     }
 
-    async getUsers() {
-        try {            
+    async getUsers(skip=0, limit=process.env.MONGO_QUERY_LIMIT, order={'name': 1}, special={}) {
+        try {        
+            const query = { ...this.getResource(), ...special };
+
+            console.log(skip, limit, order, query);
+
             const collection = await MongoDB.usersCollection();
-            const users = await collection.find( this.getResource() ).toArray();
+            const users = await collection.find( query ).sort(order).skip(skip).limit( parseInt(limit) ).toArray();
 
             let userList = [];
             for(let user of users) 
@@ -81,7 +85,7 @@ class UserModel extends MainModel {
     getPassword() { return this.password; }
     getRole() { return this.role; }
 
-    setID( id ) { this._id = ObjectID( id ); }
+    setID( id ) { this._id = id ? ObjectID( id ) : null; }
     setName( name ) { this.name = name; }
     setEmail( email ) { this.email = email; }
     setPassword( pass ) { this.password = pass; }

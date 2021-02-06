@@ -8,6 +8,44 @@ class UserService {
         this.#controller = c;
     }
 
+    async getUsers() {
+        try {
+            let queryProperties = {...this.#controller.params, ...this.#controller.query};
+
+            // Ordering
+            let order = {};
+            if('asc' in queryProperties) order[ queryProperties['asc'] ] = 1;
+            if('desc' in queryProperties) order[ queryProperties['desc'] ] = -1;
+
+            // Pagination
+            let page = ('page' in queryProperties) ? parseInt( queryProperties.page ) : 1;
+            let limit = ('limit' in queryProperties) ? parseInt( queryProperties.limit ) : process.env.MONGO_QUERY_LIMIT;
+            let skip = (page - 1) * limit;
+
+            // Special
+            let special = {};
+            if('name' in queryProperties) {
+                special.name = new RegExp(queryProperties.name);
+                delete queryProperties.name;
+            }
+
+            const user = new UserModel( queryProperties );            
+            const results = await user.getUsers(skip, limit, order, special);
+
+            if(!results) throw new Error('Could not find user with the given credentials...');
+            
+            const resources = await Promise.all(results.map(async (userInstance) => {
+                const resource = await userInstance.getResource();
+                delete resource.password;
+                return resource;
+            }));
+
+            return this.#controller.setResponse(200, {'status': true, 'data':resources});
+        } catch (err) {
+            return this.#controller.setResponse(500, {'status': false, 'message': err.message});
+        }
+    }
+
     async checkUserLogin() {
         try {
             const queryProperties = this.#controller.params;
@@ -25,32 +63,6 @@ class UserService {
             return this.#controller.setResponse(500, {'status': false, 'message': err.message});
         }
     }
-
-    async getUsers() {
-        try {
-            let queryProperties = {...this.#controller.params, ...this.#controller.query};
-
-            const user = new UserModel( queryProperties );            
-            const results = await user.getUsers();
-
-            if(!results) throw new Error('Could not find user with the given credentials...');
-            
-            const resources = await Promise.all(results.map(async (userInstance) => {
-                const resource = await userInstance.getResource();
-                delete resource.password;
-                return resource;
-            }));
-
-            return this.#controller.setResponse(200, {'status': true, 'data':resources});
-        } catch (err) {
-            return this.#controller.setResponse(500, {'status': false, 'message': err.message});
-        }
-    }
-
-
-
-
-
 
     async createNewUser() {
         try {     

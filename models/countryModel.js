@@ -6,16 +6,15 @@ const { ObjectID } = require('mongodb');
 class CountryModel extends MainModel {
     constructor({_id, name, language}) {
         super();
-
-        this._id = _id ? ObjectID(_id) : null;
-        this.name = name;
-        this.language = language;
+        
+        this.setID( _id );
+        this.setName( name );
+        this.setLanguage( language );
     }
 
     async getCountries(skip=0, limit=process.env.MONGO_QUERY_LIMIT, order={}, special={}) {
         try {
             const query = { ...this.getResource(), ...special };
-            console.log(skip,limit,order,query);
             const collection = await MongoDB.countriesCollection();
             const countries = await collection.find(query).sort(order).skip(skip).limit( parseInt(limit) ).toArray();
 
@@ -45,7 +44,7 @@ class CountryModel extends MainModel {
     getName() { return this.name; }
     getLanguage() { return this.language; }
 
-    setID( id ) { this._id = ObjectID(id); }
+    setID( id ) { this._id = id ? ObjectID(id) : null; }
     setName( name ) { this.name = name; }
     setLanguage( language ) { this.language = language; }
 } // End of class

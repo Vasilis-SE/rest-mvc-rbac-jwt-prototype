@@ -17,12 +17,9 @@ class UserModel extends MainModel {
         this.setRole( role );
     }
 
-    async getUsers(skip=0, limit=process.env.MONGO_QUERY_LIMIT, order={'name': 1}, special={}) {
+    async getUsers(skip=0, limit=process.env.MONGO_QUERY_LIMIT, order={}, special={}) {
         try {        
             const query = { ...this.getResource(), ...special };
-
-            console.log(skip, limit, order, query);
-
             const collection = await MongoDB.usersCollection();
             const users = await collection.find( query ).sort(order).skip(skip).limit( parseInt(limit) ).toArray();
 

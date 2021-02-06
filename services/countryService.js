@@ -9,11 +9,27 @@ class CountryService {
 
     async getCountries() {
         try {
-            // Bind all data for the query
             let queryProperties = {...this.#controller.params, ...this.#controller.query};
 
+            // Ordering
+            let order = {'name': 1};
+            if('asc' in queryProperties) order[ queryProperties['asc'] ] = 1;
+            if('desc' in queryProperties) order[ queryProperties['desc'] ] = -1;
+
+            // Pagination
+            let page = ('page' in queryProperties) ? parseInt( queryProperties.page ) : 1;
+            let limit = ('limit' in queryProperties) ? parseInt( queryProperties.limit ) : process.env.MONGO_QUERY_LIMIT;
+            let skip = (page - 1) * limit;
+
+            // Special
+            let special = {};
+            if('name' in queryProperties) {
+                special.name = new RegExp(queryProperties.name, 'i');
+                delete queryProperties.name;
+            }
+
             const country = new CountriesModel(queryProperties);
-            const result = await country.getCountries();
+            const result = await country.getCountries(skip, limit, order, special);
 
             if(!result) throw new Error('Could not fetch country list...');
             if(result.length === 0) throw new Error('Could not find any results with the given criteria...');

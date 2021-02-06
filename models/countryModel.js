@@ -12,10 +12,12 @@ class CountryModel extends MainModel {
         this.language = language;
     }
 
-    async getCountries() {
+    async getCountries(skip=0, limit=process.env.MONGO_QUERY_LIMIT, order={}, special={}) {
         try {
+            const query = { ...this.getResource(), ...special };
+            console.log(skip,limit,order,query);
             const collection = await MongoDB.countriesCollection();
-            const countries = await collection.find( this.getResource() ).toArray();
+            const countries = await collection.find(query).sort(order).skip(skip).limit( parseInt(limit) ).toArray();
 
             const countryList = [];
             for(let country of countries) 

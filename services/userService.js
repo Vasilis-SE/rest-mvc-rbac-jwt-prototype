@@ -13,7 +13,7 @@ class UserService {
             let queryProperties = {...this.#controller.params, ...this.#controller.query};
 
             // Ordering
-            let order = {};
+            let order = {'name': 1};
             if('asc' in queryProperties) order[ queryProperties['asc'] ] = 1;
             if('desc' in queryProperties) order[ queryProperties['desc'] ] = -1;
 
